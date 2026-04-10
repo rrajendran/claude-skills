@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en" data-color-mode="dark" data-dark-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROJECT NAME — Documentation</title>
+  <style>
+    /* ========== GitHub-style Reset & Base ========== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-canvas-default: #0d1117;
+      --color-canvas-subtle: #161b22;
+      --color-canvas-inset: #010409;
+      --color-border-default: #30363d;
+      --color-border-muted: #21262d;
+      --color-fg-default: #e6edf3;
+      --color-fg-muted: #8b949e;
+      --color-fg-subtle: #6e7681;
+      --color-accent-fg: #58a6ff;
+      --color-accent-emphasis: #1f6feb;
+      --color-success-fg: #3fb950;
+      --color-danger-fg: #f85149;
+      --color-attention-fg: #d29922;
+      --color-done-fg: #a371f7;
+      --color-sponsors-fg: #db61a2;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+      --sidebar-width: 280px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-canvas-default);
+      color: var(--color-fg-default);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--color-accent-fg); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ========== Layout ========== */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ========== Sidebar ========== */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--color-canvas-subtle);
+      border-right: 1px solid var(--color-border-default);
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      overflow-y: auto;
+      padding: 24px 16px;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-fg-default);
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--color-border-default);
+    }
+
+    .sidebar-logo svg { flex-shrink: 0; }
+    .sidebar-section { margin-bottom: 20px; }
+
+    .sidebar-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-fg-muted);
+      padding: 4px 8px;
+      margin-bottom: 4px;
+    }
+
+    .sidebar-link {
+      display: block;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--color-fg-muted);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .sidebar-link:hover {
+      background: rgba(177, 186, 196, 0.12);
+      color: var(--color-fg-default);
+      text-decoration: none;
+    }
+
+    .sidebar-link.active {
+      background: rgba(56, 139, 253, 0.15);
+      color: var(--color-accent-fg);
+    }
+
+    .sidebar-badge {
+      display: inline-block;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 600;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .badge-admin   { background: rgba(219,97,162,0.2); color: var(--color-sponsors-fg); }
+    .badge-new     { background: rgba(63,185,80,0.2);  color: var(--color-success-fg); }
+    .badge-optional{ background: rgba(210,153,34,0.2); color: var(--color-attention-fg); }
+
+    /* ========== Main Content ========== */
+    .main {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      max-width: 960px;
+      padding: 32px 40px 80px;
+    }
+
+    /* ========== Hero ========== */
+    .hero {
+      padding: 48px 0 40px;
+      border-bottom: 1px solid var(--color-border-default);
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #58a6ff, #a371f7, #db61a2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--color-fg-muted);
+      max-width: 640px;
+      line-height: 1.5;
+    }
+
+    .hero-badges {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--color-border-default);
+      background: var(--color-canvas-subtle);
+      color: var(--color-fg-muted);
+    }
+
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* Language dot colors */
+    .dot-python { background: #3572A5; }
+    .dot-ts     { background: #3178c6; }
+    .dot-js     { background: #f1e05a; }
+    .dot-ml     { background: var(--color-success-fg); }
+    .dot-go     { background: #00ADD8; }
+    .dot-rust   { background: #CE422B; }
+    .dot-ruby   { background: #701516; }
+    .dot-java   { background: #b07219; }
+
+    /* ========== Sections ========== */
+    .section { margin-bottom: 48px; }
+
+    .section > h2 {
+      font-size: 24px;
+      font-weight: 700;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--color-border-default);
+      margin-bottom: 20px;
+    }
+
+    .section > h2 .anchor {
+      color: var(--color-fg-subtle);
+      margin-right: 4px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .section > h2:hover .anchor { opacity: 1; }
+
+    h3 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; }
+    h4 { font-size: 15px; font-weight: 600; margin: 20px 0 8px; color: var(--color-fg-muted); }
+    p  { margin-bottom: 16px; }
+    ul, ol { padding-left: 24px; margin-bottom: 16px; }
+    li { margin-bottom: 4px; }
+
+    /* ========== Code Blocks ========== */
+    pre {
+      background: var(--color-canvas-inset);
+      border: 1px solid var(--color-border-default);
+      border-radius: 6px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.875em;
+      background: rgba(110,118,129,0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    pre code { background: none; padding: 0; font-size: inherit; }
+
+    /* ========== Tables ========== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    th, td { padding: 8px 12px; border: 1px solid var(--color-border-default); text-align: left; }
+    th { background: var(--color-canvas-subtle); font-weight: 600; font-size: 13px; color: var(--color-fg-muted); }
+    td code { font-size: 12px; }
+    tr:hover td { background: rgba(177,186,196,0.04); }
+
+    /* ========== Cards ========== */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background: var(--color-canvas-subtle);
+      border: 1px solid var(--color-border-default);
+      border-radius: 6px;
+      padding: 20px;
+    }
+
+    .card h4 { margin: 0 0 8px; font-size: 15px; color: var(--color-fg-default); }
+    .card p  { font-size: 13px; color: var(--color-fg-muted); margin: 0; }
+    .card-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+
+    /* ========== Callout Boxes ========== */
+    .callout {
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      border-left: 4px solid;
+      font-size: 14px;
+    }
+
+    .callout-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .callout-note    { background: rgba(56,139,253,0.1);  border-color: var(--color-accent-emphasis); }
+    .callout-note    .callout-title { color: var(--color-accent-fg); }
+    .callout-tip     { background: rgba(63,185,80,0.1);   border-color: var(--color-success-fg); }
+    .callout-tip     .callout-title { color: var(--color-success-fg); }
+    .callout-warning { background: rgba(210,153,34,0.1);  border-color: var(--color-attention-fg); }
+    .callout-warning .callout-title { color: var(--color-attention-fg); }
+    .callout-danger  { background: rgba(248,81,73,0.1);   border-color: var(--color-danger-fg); }
+    .callout-danger  .callout-title { color: var(--color-danger-fg); }
+
+    /* ========== HTTP Method & Auth Badges ========== */
+    .method-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      letter-spacing: 0.03em;
+      vertical-align: middle;
+    }
+
+    .method-get    { background: rgba(63,185,80,0.2);  color: var(--color-success-fg); }
+    .method-post   { background: rgba(56,139,253,0.2); color: var(--color-accent-fg); }
+    .method-put    { background: rgba(210,153,34,0.2); color: var(--color-attention-fg); }
+    .method-patch  { background: rgba(163,113,247,0.2);color: var(--color-done-fg); }
+    .method-delete { background: rgba(248,81,73,0.2);  color: var(--color-danger-fg); }
+
+    .auth-badge {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .auth-public    { background: rgba(63,185,80,0.15);  color: var(--color-success-fg); }
+    .auth-protected { background: rgba(56,139,253,0.15); color: var(--color-accent-fg); }
+    .auth-admin     { background: rgba(219,97,162,0.15); color: var(--color-sponsors-fg); }
+
+    /* ========== API Endpoint Blocks ========== */
+    .endpoint {
+      background: var(--color-canvas-subtle);
+      border: 1px solid var(--color-border-default);
+      border-radius: 6px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    .endpoint-header:hover { background: rgba(177,186,196,0.06); }
+
+    .endpoint-path { font-family: var(--font-mono); font-size: 14px; font-weight: 500; color: var(--color-fg-default); }
+    .endpoint-desc { font-size: 13px; color: var(--color-fg-muted); margin-left: auto; }
+
+    .endpoint-body {
+      padding: 16px;
+      border-top: 1px solid var(--color-border-muted);
+      display: none;
+      font-size: 14px;
+    }
+
+    .endpoint.open .endpoint-body { display: block; }
+
+    .endpoint-body h5 {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-fg-subtle);
+      margin: 12px 0 6px;
+    }
+
+    .endpoint-body h5:first-child { margin-top: 0; }
+
+    /* ========== Tree View ========== */
+    .tree {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--color-fg-muted);
+      background: var(--color-canvas-inset);
+      border: 1px solid var(--color-border-default);
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .tree .dir     { color: var(--color-accent-fg); font-weight: 600; }
+    .tree .file    { color: var(--color-fg-default); }
+    .tree .comment { color: var(--color-fg-subtle); font-style: italic; }
+
+    /* ========== Feature List ========== */
+    .feature-list { list-style: none; padding: 0; margin-bottom: 16px; }
+
+    .feature-list li {
+      padding: 6px 0;
+      border-bottom: 1px solid var(--color-border-muted);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-list li:last-child { border-bottom: none; }
+    .check   { color: var(--color-success-fg); }
+    .pending { color: var(--color-attention-fg); }
+
+    /* ========== Pipeline Flow ========== */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      padding: 16px;
+      background: var(--color-canvas-inset);
+      border: 1px solid var(--color-border-default);
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+
+    .pipeline-step {
+      background: var(--color-canvas-subtle);
+      border: 1px solid var(--color-border-default);
+      border-radius: 6px;
+      padding: 10px 16px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .pipeline-step small {
+      display: block;
+      color: var(--color-fg-subtle);
+      font-weight: 400;
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .pipeline-arrow { color: var(--color-fg-subtle); font-size: 18px; padding: 0 6px; flex-shrink: 0; }
+
+    /* ========== Expandable Details ========== */
+    .expandable summary {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--color-fg-default);
+      padding: 8px 0;
+      list-style: none;
+    }
+
+    .expandable summary::before       { content: "▸ "; color: var(--color-fg-subtle); }
+    .expandable[open] summary::before { content: "▾ "; }
+
+    /* ========== Utilities ========== */
+    .text-muted { color: var(--color-fg-muted); }
+    .text-sm    { font-size: 13px; }
+    .text-mono  { font-family: var(--font-mono); }
+    .mb-16      { margin-bottom: 16px; }
+    .flex-row   { display: flex; gap: 8px; align-items: center; }
+
+    /* ========== Mobile ========== */
+    .mobile-toggle {
+      display: none;
+      position: fixed;
+      top: 12px; left: 12px;
+      z-index: 200;
+      background: var(--color-canvas-subtle);
+      border: 1px solid var(--color-border-default);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--color-fg-default);
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-toggle { display: block; }
+      .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; padding: 24px 20px 60px; }
+      .hero h1 { font-size: 28px; }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ========== Scrollbar ========== */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--color-border-default); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--color-fg-subtle); }
+
+    /* ========== Back to Top ========== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--color-accent-emphasis);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s;
+      border: none;
+      font-size: 18px;
+      z-index: 50;
+    }
+
+    .back-to-top.visible { opacity: 1; }
+    .back-to-top:hover { background: var(--color-accent-fg); }
+  </style>
+</head>
+<body>
+
+<!-- Mobile Toggle -->
+<button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle navigation">☰</button>
+
+<!-- ============================================================
+     SIDEBAR NAVIGATION
+     - One .sidebar-section per logical group
+     - sidebar-link href must match section id exactly
+     ============================================================ -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <!-- Replace SVG with something relevant, or use an emoji -->
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="16"></line>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+    </svg>
+    PROJECT NAME
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Getting Started</div>
+    <a class="sidebar-link" href="#overview">Overview</a>
+    <a class="sidebar-link" href="#quick-start">Quick Start</a>
+    <a class="sidebar-link" href="#architecture">Architecture</a>
+    <a class="sidebar-link" href="#project-structure">Project Structure</a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Reference</div>
+    <a class="sidebar-link" href="#configuration">Configuration</a>
+    <a class="sidebar-link" href="#api-reference">API Reference</a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Operations</div>
+    <a class="sidebar-link" href="#deployment">Deployment</a>
+    <a class="sidebar-link" href="#dependencies">Dependencies</a>
+  </div>
+</nav>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<div class="layout">
+  <main class="main">
+
+    <!-- ====== HERO ====== -->
+    <div class="hero" id="overview">
+      <h1>PROJECT NAME</h1>
+      <p>Short, compelling description of what this project does and who it is for.</p>
+      <div class="hero-badges">
+        <span class="hero-badge"><span class="dot dot-python"></span>Python 3.11+</span>
+        <span class="hero-badge"><span class="dot dot-ts"></span>TypeScript</span>
+        <span class="hero-badge">🐳 Docker Ready</span>
+      </div>
+    </div>
+
+    <!-- ====== FEATURE CARDS ====== -->
+    <!-- Remove this block if the project has fewer than 3 notable features -->
+    <div class="card-grid">
+      <div class="card">
+        <span class="card-icon">⚡</span>
+        <h4>Feature One</h4>
+        <p>One-line description of what this feature does.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🔐</span>
+        <h4>Feature Two</h4>
+        <p>One-line description of what this feature does.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">📊</span>
+        <h4>Feature Three</h4>
+        <p>One-line description of what this feature does.</p>
+      </div>
+    </div>
+
+    <!-- ====== QUICK START ====== -->
+    <div class="section" id="quick-start">
+      <h2><a class="anchor" href="#quick-start">#</a> Quick Start</h2>
+
+      <h3>Prerequisites</h3>
+      <ul class="feature-list">
+        <li><span class="check">✓</span> Node.js 20+ / Python 3.11+</li>
+        <li><span class="check">✓</span> Docker (optional)</li>
+      </ul>
+
+      <h3>1. Clone & Install</h3>
+<pre><code>git clone https://github.com/org/repo.git
+cd repo
+cp .env.example .env</code></pre>
+
+      <div class="callout callout-tip">
+        <div class="callout-title">💡 Tip</div>
+        Edit <code>.env</code> and set the required variables before starting.
+      </div>
+
+      <h3>2. Run</h3>
+<pre><code>npm install && npm run dev
+# or
+docker compose up --build</code></pre>
+
+      <div class="callout callout-note">
+        <div class="callout-title">ℹ️ Note</div>
+        Replace with the actual start commands found in the project.
+      </div>
+    </div>
+
+    <!-- ====== ARCHITECTURE ====== -->
+    <div class="section" id="architecture">
+      <h2><a class="anchor" href="#architecture">#</a> Architecture</h2>
+
+      <p>High-level description of the system design.</p>
+
+      <div class="pipeline">
+        <div class="pipeline-step">Client<small>Frontend</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">API<small>Backend</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Database<small>Persistence</small></div>
+      </div>
+
+      <h3>Stack Summary</h3>
+      <table>
+        <thead><tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>Frontend</td><td>React / Next.js</td><td>UI</td></tr>
+          <tr><td>Backend</td><td>FastAPI / Express</td><td>REST API</td></tr>
+          <tr><td>Database</td><td>PostgreSQL / SQLite</td><td>Persistence</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ====== PROJECT STRUCTURE ====== -->
+    <div class="section" id="project-structure">
+      <h2><a class="anchor" href="#project-structure">#</a> Project Structure</h2>
+
+      <pre class="tree"><span class="dir">project/</span>
+├── <span class="file">.env.example</span>              <span class="comment"># Environment template</span>
+├── <span class="file">docker-compose.yml</span>        <span class="comment"># Multi-container setup</span>
+├── <span class="dir">backend/</span>
+│   └── <span class="file">main.py</span>               <span class="comment"># Entry point</span>
+└── <span class="dir">frontend/</span>
+    └── <span class="file">src/</span></pre>
+    </div>
+
+    <!-- ====== CONFIGURATION ====== -->
+    <div class="section" id="configuration">
+      <h2><a class="anchor" href="#configuration">#</a> Configuration</h2>
+
+      <p>Copy <code>.env.example</code> to <code>.env</code> and set the values below.</p>
+
+      <table>
+        <thead>
+          <tr><th>Variable</th><th>Default</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>PORT</code></td><td><code>8000</code></td><td>Server port</td></tr>
+          <tr><td><code>DATABASE_URL</code></td><td><code>sqlite:///./app.db</code></td><td>Database connection string</td></tr>
+          <tr><td><code>SECRET_KEY</code></td><td><em>required</em></td><td>Secret key for auth tokens</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-danger">
+        <div class="callout-title">⚠️ Security</div>
+        Always change <code>SECRET_KEY</code> before deploying to production.
+      </div>
+    </div>
+
+    <!-- ====== API REFERENCE ====== -->
+    <div class="section" id="api-reference">
+      <h2><a class="anchor" href="#api-reference">#</a> API Reference</h2>
+
+      <p>Base URL: <code>http://localhost:8000</code></p>
+
+      <h3>Authentication</h3>
+
+      <!-- First endpoint is open by default; rest are collapsed -->
+      <div class="endpoint open">
+        <div class="endpoint-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="method-badge method-post">POST</span>
+          <span class="endpoint-path">/api/auth/login</span>
+          <span class="auth-badge auth-public">Public</span>
+          <span class="endpoint-desc">Get access token</span>
+        </div>
+        <div class="endpoint-body">
+          <h5>Request Body</h5>
+<pre><code>{
+  "username": "admin",
+  "password": "secret"
+}</code></pre>
+          <h5>Response <code>200</code></h5>
+<pre><code>{
+  "access_token": "eyJ...",
+  "token_type": "bearer"
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="method-badge method-get">GET</span>
+          <span class="endpoint-path">/api/health</span>
+          <span class="auth-badge auth-public">Public</span>
+          <span class="endpoint-desc">Health check</span>
+        </div>
+        <div class="endpoint-body">
+          <h5>Response <code>200</code></h5>
+<pre><code>{ "status": "ok" }</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== DEPLOYMENT ====== -->
+    <div class="section" id="deployment">
+      <h2><a class="anchor" href="#deployment">#</a> Deployment</h2>
+
+      <h3>Docker Compose</h3>
+<pre><code>docker compose up --build -d</code></pre>
+
+      <h3>Manual</h3>
+<pre><code># Backend
+pip install -e "."
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+# Frontend
+npm install && npm run build && npm start</code></pre>
+    </div>
+
+    <!-- ====== DEPENDENCIES ====== -->
+    <div class="section" id="dependencies">
+      <h2><a class="anchor" href="#dependencies">#</a> Dependencies</h2>
+
+      <table>
+        <thead><tr><th>Package</th><th>Version</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>fastapi</code></td><td>0.115+</td><td>REST API framework</td></tr>
+          <tr><td><code>sqlalchemy</code></td><td>2.0+</td><td>ORM</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Footer -->
+    <div style="border-top: 1px solid var(--color-border-default); padding-top: 24px; margin-top: 48px; text-align: center;">
+      <p class="text-muted text-sm">
+        PROJECT NAME Documentation
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<!-- Back to Top -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<script>
+  // Back to top visibility
+  window.addEventListener('scroll', () => {
+    document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // Active sidebar link highlighting via IntersectionObserver
+  const sections = document.querySelectorAll('.section[id], .hero[id]');
+  const navLinks = document.querySelectorAll('.sidebar-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -75% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Close mobile sidebar on link click
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 768) {
+        document.querySelector('.sidebar').classList.remove('open');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
