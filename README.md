@@ -12,41 +12,11 @@ Personal Claude Code skills collection.
 
 ## Installation
 
-Skills in this repo are loaded by pointing Claude Code's skills path at this directory.
-
-### Option A — Symlink into `~/.claude/skills/` (recommended)
-
 ```bash
-# Create the skills dir if it doesn't exist
-mkdir -p ~/.claude/skills
-
-# Symlink each skill you want active
-ln -s ~/stash/github/claude-skills/github-docs ~/.claude/skills/github-docs
+npx ai-agent-skills rrajendran/claude-skills
 ```
 
-After linking, Claude Code will discover the skill automatically in every session.
-
-### Option B — Add a skills path in `settings.json`
-
-Open `~/.claude/settings.json` and add (or extend) the `skillsDirectories` key:
-
-```json
-{
-  "skillsDirectories": [
-    "~/stash/github/claude-skills"
-  ]
-}
-```
-
-Restart Claude Code for the change to take effect.
-
-### Option C — Reference from a project's `CLAUDE.md`
-
-If you only want a skill active in one project, add to `.claude/CLAUDE.md` (or the project's `CLAUDE.md`):
-
-```markdown
-@~/stash/github/claude-skills/github-docs/SKILL.md
-```
+This installs all skills globally to `~/.claude/skills/`, making them available in every session.
 
 ---
 
